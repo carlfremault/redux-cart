@@ -43,10 +43,6 @@ const productsSlice = createSlice({
       } else {
         delete state[action.payload];
         return state;
-        // return {
-        //   ...state,
-        //   [action.payload]: null,
-        // };
       }
     },
   },
