@@ -10,7 +10,7 @@ let isInitial = true;
 
 function App() {
   const cartVisible = useSelector((state) => state.ui.cartVisible);
-  const cart = useSelector((state) => state.products);
+  const cart = useSelector((state) => state.cart);
   const notification = useSelector((state) => state.ui.notification);
 
   const dispatch = useDispatch();

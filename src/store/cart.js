@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialProductsState = {};
+const initialCartState = {};
 
-const productsSlice = createSlice({
+const cartSlice = createSlice({
   name: 'products',
-  initialState: initialProductsState,
+  initialState: initialCartState,
   reducers: {
     addProduct(state, action) {
       if (state[action.payload.title]) {
@@ -48,5 +48,5 @@ const productsSlice = createSlice({
   },
 });
 
-export const productsActions = productsSlice.actions;
-export default productsSlice.reducer;
+export const cartActions = cartSlice.actions;
+export default cartSlice.reducer;

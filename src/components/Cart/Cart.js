@@ -4,14 +4,14 @@ import CartItem from './CartItem';
 import classes from './Cart.module.css';
 
 const Cart = () => {
-  const cartProducts = useSelector((state) => state.products);
+  const cart = useSelector((state) => state.cart);
 
   return (
     <Card className={classes.cart}>
       <h2>Your Shopping Cart</h2>
       <ul>
-        {Object.keys(cartProducts).map((cartProduct) => {
-          const { title, quantity, price } = cartProducts[cartProduct];
+        {Object.keys(cart).map((cartProduct) => {
+          const { title, quantity, price } = cart[cartProduct];
           const total = quantity * price;
           return (
             <CartItem key={title} item={{ title, quantity, total, price }} />
