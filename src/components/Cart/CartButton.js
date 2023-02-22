@@ -5,8 +5,8 @@ import classes from './CartButton.module.css';
 const CartButton = (props) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const nbProducts = Object.keys(cart).reduce(
-    (acc, curr) => acc + cart[curr].quantity,
+  const nbProducts = Object.keys(cart.products).reduce(
+    (acc, curr) => acc + cart.products[curr].quantity,
     0
   );
 

@@ -1,94 +1,78 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { uiActions } from './ui';
 
-const initialCartState = {};
+const initialCartState = { products: {}, changed: false };
 
 const cartSlice = createSlice({
-  name: 'products',
+  name: 'cart',
   initialState: initialCartState,
   reducers: {
+    replaceCart(state, action) {
+      return {
+        ...state,
+        products: action.payload.products
+          ? action.payload.products
+          : initialCartState.products,
+      };
+    },
     addProduct(state, action) {
-      if (state[action.payload.title]) {
+      if (state.products[action.payload.title]) {
         return {
-          ...state,
-          [action.payload.title]: {
-            ...action.payload,
-            quantity: state[action.payload.title].quantity + 1,
+          products: {
+            ...state.products,
+            [action.payload.title]: {
+              ...state.products[action.payload.title],
+              quantity: state.products[action.payload.title].quantity + 1,
+            },
           },
+          changed: true,
         };
       } else {
         return {
-          ...state,
-          [action.payload.title]: { ...action.payload, quantity: 1 },
+          products: {
+            ...state.products,
+            [action.payload.title]: {
+              title: action.payload.title,
+              quantity: 1,
+              price: action.payload.price,
+            },
+          },
+          changed: true,
         };
       }
     },
     addQuantity(state, action) {
       return {
         ...state,
-        [action.payload]: {
-          ...state[action.payload],
-          quantity: state[action.payload].quantity + 1,
+        products: {
+          ...state.products,
+          [action.payload]: {
+            ...state.products[action.payload],
+            quantity: state.products[action.payload].quantity + 1,
+          },
         },
+        changed: true,
       };
     },
     removeQuantity(state, action) {
-      if (state[action.payload].quantity > 1) {
+      if (state.products[action.payload].quantity > 1) {
         return {
           ...state,
-          [action.payload]: {
-            ...state[action.payload],
-            quantity: state[action.payload].quantity - 1,
+          products: {
+            ...state.products,
+            [action.payload]: {
+              ...state.products[action.payload],
+              quantity: state.products[action.payload].quantity - 1,
+            },
           },
+          changed: true,
         };
       } else {
-        delete state[action.payload];
+        delete state.products[action.payload];
         return state;
       }
     },
   },
 });
-
-export const sendCartData = (cart) => {
-  return async (dispatch) => {
-    dispatch(
-      uiActions.showNotification({
-        status: 'pending',
-        title: 'Sending...',
-        message: 'Sending cart data.',
-      })
-    );
-
-    const sendRequest = async () => {
-      const response = await fetch(
-        'https://react-http-e8697-default-rtdb.europe-west1.firebasedatabase.app/cart.json',
-        { method: 'PUT', body: JSON.stringify(cart) }
-      );
-
-      if (!response.ok) throw new Error('Sending cart data failed.');
-    };
-
-    try {
-      await sendRequest();
-
-      dispatch(
-        uiActions.showNotification({
-          status: 'success',
-          title: 'Success!',
-          message: 'Cart data sent successfully.',
-        })
-      );
-    } catch (error) {
-      dispatch(
-        uiActions.showNotification({
-          status: 'error',
-          title: 'Error!',
-          message: 'Sending cart data failed.',
-        })
-      );
-    }
-  };
-};
 
 export const cartActions = cartSlice.actions;
 export default cartSlice.reducer;

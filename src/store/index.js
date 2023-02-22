@@ -7,6 +7,7 @@ const store = configureStore({
     ui: uiReducer,
     cart: cartReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 
 export default store;
