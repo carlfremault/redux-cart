@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
+import uiReducer from './ui';
 import cartReducer from './cart';
-import productsReducer from './products';
 
 const store = configureStore({
   reducer: {
+    ui: uiReducer,
     cart: cartReducer,
-    products: productsReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 
 export default store;
